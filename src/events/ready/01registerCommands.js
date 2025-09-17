@@ -8,8 +8,12 @@ module.exports = async (client) => {
     const localCommands = getLocalCommands();
     const applicationCommands = await getApplicationCommands(
       client,
-      testServer
+      client.guilds.cache.get('id')
+      // testServer
     );
+
+    // console.log(client);
+    
 
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;

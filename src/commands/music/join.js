@@ -1,9 +1,10 @@
 const { joinVoiceChannel } = require('@discordjs/voice')
+const { InteractionContextType, MessageFlags} = require('discord.js')
 
 module.exports = {
   name: 'join',
   description: 'Join bot in a call',
-  testOnly: true,
+  testOnly: false,
   // options: Object[],
 
   callback: (client, interaction) => {
@@ -22,7 +23,11 @@ module.exports = {
     })
 
 
-    interaction.reply(`voiceChannel: info ${voiceChannel.id} ${voiceChannel.name}`)
+    interaction.reply({
+        content: `voiceChannel: info ${voiceChannel.id} ${voiceChannel.name}`,
+        // flags: MessageFlags.Ephemeral
+
+    })
 
 
   },

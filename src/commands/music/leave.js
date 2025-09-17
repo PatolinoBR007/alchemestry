@@ -1,9 +1,10 @@
 const { joinVoiceChannel } = require('@discordjs/voice')
+const { InteractionContextType, MessageFlags} = require('discord.js')
 
 module.exports = {
   name: 'leave',
   description: 'quit bot of the call',
-  testOnly: true,
+  testOnly: false,
   // options: Object[],
 
   callback: (client, interaction) => {
@@ -22,7 +23,10 @@ module.exports = {
     conection.destroy()
 
 
-    interaction.reply(`voiceChannel: info ${voiceChannel.id} ${voiceChannel.name}`)
+    interaction.reply({
+        content: 'Vlw Flw',
+        flags: MessageFlags.Ephemeral
+    })
 
 
   },
