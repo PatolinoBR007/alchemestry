@@ -8,10 +8,16 @@ module.exports = {
   // options: Object[],
 
   callback: (client, interaction) => {
-    
-    const voiceChannel = interaction.member.voice.channel
 
-// console.log(voiceChannel)
+    const voiceChannel = interaction.member?.voice?.channel
+    
+    if (!voiceChannel) {
+      return interaction.reply({
+        content: "❌ Você precisa estar em um canal de voz primeiro!",
+        flags: MessageFlags.Ephemeral, // mensagem só visível pro usuário
+      });
+    }
+
 
     const conection = joinVoiceChannel({
         channelId: voiceChannel.id,
@@ -19,16 +25,11 @@ module.exports = {
         adapterCreator: voiceChannel.guild.voiceAdapterCreator,
         selfDeaf: false,
         selfMute: false,
-
     })
-
 
     interaction.reply({
-        content: `voiceChannel: info ${voiceChannel.id} ${voiceChannel.name}`,
+        content: `voiceChannel: Size: **${voiceChannel.members.size}**     __${voiceChannel.name}__`,
         // flags: MessageFlags.Ephemeral
-
     })
-
-
   },
 };

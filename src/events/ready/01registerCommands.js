@@ -57,4 +57,5 @@ module.exports = async (client) => {
   } catch (error) {
     console.log(`TThere was an error: ${error}`);
   }
+  // client.application.commands.set([], '1225478336663388260')
 };
