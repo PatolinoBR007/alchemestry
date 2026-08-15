@@ -1,5 +1,8 @@
 module.exports = (existingCommand, localCommand) => {
   const areChoicesDifferent = (existingChoices, localChoices) => {
+      if ((existingChoices?.length || 0) !== localChoices.length) 
+        return true;
+
     for (const localChoice of localChoices) {
       const existingChoice = existingChoices?.find(
         (choice) => choice.name === localChoice.name
@@ -18,6 +21,9 @@ module.exports = (existingCommand, localCommand) => {
 
   const areOptionsDifferent = (existingOptions, localOptions) => {
     for (const localOption of localOptions) {
+        if ((existingOptions?.length || 0) !== localOptions.length) 
+          return true;
+  
       const existingOption = existingOptions?.find(
         (option) => option.name === localOption.name
       );

@@ -8,17 +8,22 @@ module.exports = async (client) => {
     const localCommands = getLocalCommands();
     const applicationCommands = await getApplicationCommands(
       client,
-      client.guilds.cache.get('id')
+      client.guilds.cache.get(testServer)
       // testServer
     );
 
-    // console.log(client);
+    const globalCommands = await getApplicationCommands(client);
     
+
+    console.log(
+      'Comandos globais:',
+      globalCommands.map((command) => command.name)
+    );
 
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;
 
-      const existingCommand = await applicationCommands.cache.find(
+      const existingCommand = applicationCommands.find(
         (cmd) => cmd.name === name
       );
 
