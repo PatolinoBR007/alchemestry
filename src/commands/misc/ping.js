@@ -2,7 +2,7 @@ module.exports = {
   name: 'ping',
   description: 'Pong!',
   // devOnly: Boolean,
-  testOnly: true,
+  testOnly: false,
   // options: Object[],
   // deleted: Boolean,
 
