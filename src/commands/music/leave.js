@@ -1,33 +1,26 @@
-const { joinVoiceChannel } = require('@discordjs/voice')
-const { InteractionContextType, MessageFlags} = require('discord.js')
+const { getVoiceConnection } = require('@discordjs/voice');
+const { MessageFlags } = require('discord.js');
 
 module.exports = {
   name: 'leave',
-  description: 'quit bot of the call',
+  description: 'Quit the bot from the voice channel',
   testOnly: false,
-  // options: Object[],
 
   callback: (client, interaction) => {
-    
-    const voiceChannel = interaction.member.voice.channel
+    const connection = getVoiceConnection(interaction.guild.id);
 
-    const conection = joinVoiceChannel({
-        channelId: voiceChannel.id,
-        guildId: voiceChannel.guild.id,
-        adapterCreator: voiceChannel.guild.voiceAdapterCreator,
-        selfDeaf: false,
-        selfMute: false,
+    if (!connection) {
+      return interaction.reply({
+        content: 'Não estou conectado a um canal de voz.',
+        flags: MessageFlags.Ephemeral,
+      });
+    }
 
-    })
-
-    conection.destroy()
-
+    connection.destroy();
 
     interaction.reply({
-        content: 'Vlw Flw',
-        flags: MessageFlags.Ephemeral
-    })
-
-
+      content: 'Vlw Flw',
+      flags: MessageFlags.Ephemeral,
+    });
   },
 };

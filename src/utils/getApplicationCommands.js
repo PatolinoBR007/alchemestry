@@ -8,5 +8,10 @@ module.exports = async (client, guildId) => {
     applicationCommands = client.application.commands;
   }
 
-  return await applicationCommands.fetch();
+  const commands = await applicationCommands.fetch();
+
+  return {
+    manager: applicationCommands,
+    commands,
+  };
 };

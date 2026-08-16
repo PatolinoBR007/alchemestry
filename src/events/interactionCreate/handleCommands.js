@@ -15,7 +15,7 @@ module.exports = async (client, interaction) => {
 
     if (commandObject.devOnly) {
       if (!devs.includes(interaction.user.id)) {
-        interaction.reply({
+        await interaction.reply({
           content: 'Only developers are allowed to run this command.',
           ephemeral: true,
         });
@@ -25,7 +25,7 @@ module.exports = async (client, interaction) => {
 
     if (commandObject.testOnly) {
       if (!interaction.guild || interaction.guild.id !== testServer) {
-        interaction.reply({
+        await interaction.reply({
           content: 'This command cannot be ran here.',
           ephemeral: true,
         });
@@ -36,7 +36,7 @@ module.exports = async (client, interaction) => {
     if (commandObject.permissionsRequired?.length) {
       for (const permission of commandObject.permissionsRequired) {
         if (!interaction.member.permissions.has(permission)) {
-          interaction.reply({
+          await interaction.reply({
             content: 'Not enough permissions.',
             ephemeral: true,
           });
@@ -50,7 +50,7 @@ module.exports = async (client, interaction) => {
         const bot = interaction.guild.members.me;
 
         if (!bot.permissions.has(permission)) {
-          interaction.reply({
+          await interaction.reply({
             content: "I don't have enough permissions.",
             ephemeral: true,
           });
@@ -62,5 +62,17 @@ module.exports = async (client, interaction) => {
     await commandObject.callback(client, interaction);
   } catch (error) {
     console.log(`There was an error running this command: ${error}`);
+
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({
+        content: 'Ocorreu um erro ao executar este comando.',
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content: 'Ocorreu um erro ao executar este comando.',
+        ephemeral: true,
+      });
+    }
   }
 };

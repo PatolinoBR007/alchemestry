@@ -6,24 +6,23 @@ const getLocalCommands = require('../../utils/getLocalCommands');
 module.exports = async (client) => {
   try {
     const localCommands = getLocalCommands();
-    const applicationCommands = await getApplicationCommands(
-      client,
-      client.guilds.cache.get(testServer)
-      // testServer
-    );
+    const { manager: applicationCommands, commands: existingCommands } = await getApplicationCommands(client, testServer);
 
-    const globalCommands = await getApplicationCommands(client);
-    
+    for (const existingCommand of existingCommands.values()) {
+      const localCommand = localCommands.find(
+        (cmd) => cmd.name === existingCommand.name
+      );
 
-    console.log(
-      'Comandos globais:',
-      globalCommands.map((command) => command.name)
-    );
+      if (!localCommand) {
+        await applicationCommands.delete(existingCommand.id);
+        console.log(`🗑 Deleted command "${existingCommand.name}".`);
+      }
+    }
 
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;
 
-      const existingCommand = applicationCommands.find(
+      const existingCommand = existingCommands.find(
         (cmd) => cmd.name === name
       );
 
@@ -60,7 +59,6 @@ module.exports = async (client) => {
       }
     }
   } catch (error) {
-    console.log(`TThere was an error: ${error}`);
+    console.log(`There was an error: ${error}`);
   }
-  // client.application.commands.set([], '1225478336663388260')
 };
